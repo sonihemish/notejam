@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: 2010-09-09
+Metadata:
+  'AWS::CloudFormation::Designer':
+    39d88c19-1a1b-480d-85b7-27bea77a935d:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 178
+        'y': 377
+      z: 0
+Resources:
+  ECSTD4SHJP:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      executionRoleArn: 'arn:aws:iam::566852390877:role/ecsTaskExecutionRole'
+      containerDefinitions:
+        - logConfiguration:
+            logDriver: awslogs
+            options:
+              awslogs-group: /ecs/notejam-task
+              awslogs-region: eu-west-2
+              awslogs-stream-prefix: ecs
+          portMappings:
+            - hostPort: 8080
+              protocol: tcp
+              containerPort: 8080
+          cpu: 0
+          image: '566852390877.dkr.ecr.eu-west-2.amazonaws.com/notejam:latest'
+          essential: true
+          name: notejame-container
+      placementConstraints: []
+      memory: '2048'
+      compatibilities:
+        - EC2
+        - FARGATE
+      taskDefinitionArn: 'arn:aws:ecs:eu-west-2:566852390877:task-definition/notejam-task:4'
+      family: notejam-task
+      requiresAttributes:
+        - name: com.amazonaws.ecs.capability.logging-driver.awslogs
+        - name: ecs.capability.execution-role-awslogs
+        - name: com.amazonaws.ecs.capability.ecr-auth
+        - name: com.amazonaws.ecs.capability.docker-remote-api.1.19
+        - name: ecs.capability.execution-role-ecr-pull
+        - name: com.amazonaws.ecs.capability.docker-remote-api.1.18
+        - name: ecs.capability.task-eni
+      requiresCompatibilities:
+        - FARGATE
+      networkMode: awsvpc
+      cpu: '1024'
+      revision: 4
+      status: ACTIVE
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 39d88c19-1a1b-480d-85b7-27bea77a935d
+    DeletionPolicy: Retain
+Outputs: {}
